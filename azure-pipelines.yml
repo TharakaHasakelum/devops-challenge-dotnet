@@ -41,5 +41,5 @@ steps:
   inputs:
     command: 'custom'
     custom: 'nuget'
-    arguments: 'push $(Build.ArtifactStagingDirectory)/*.nupkg --source "release" --api-key az version1'
+    arguments: 'push $(Build.ArtifactStagingDirectory)/*.nupkg --source "release" --api-key az --skip-duplicate'
   displayName: 'Publish NuGet package to Azure Artifacts'
