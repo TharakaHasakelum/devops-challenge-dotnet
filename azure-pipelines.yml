@@ -46,5 +46,5 @@ steps:
 
 - script: |
     docker build -t devopsdockerregistry.azurecr.io/production/salesapi:$(versionNumber) .
-    docekr push devopsdockerregistry.azurecr.io/production/salesapi:$(versionNumber)
+    docker push devopsdockerregistry.azurecr.io/production/salesapi:$(versionNumber)
   displayName: 'Build and push Docker image'
