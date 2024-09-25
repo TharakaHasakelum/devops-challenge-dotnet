@@ -6,9 +6,9 @@ pool:
   name: 'self-hosted-mac'
 
 variables:
-  ${{ if eq(variables['Build.SourceBranchName'], 'dev']}}:
+  ${{ if eq(variables['Build.SourceBranchName'], 'dev')}}:
     - group: Development
-  ${{ if eq(variables['Build.SourceBranchName'], 'main']}}:
+  ${{ if eq(variables['Build.SourceBranchName'], 'main')}}:
     - group: Production 
 
 # variables:
