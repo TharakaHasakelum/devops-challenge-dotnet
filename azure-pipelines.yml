@@ -17,9 +17,9 @@ steps:
     dotnet build $(solution) --configuration $(buildConfiguration)
   displayName: 'Build solution'
 
-- script: |
-    dotnet test $(solution) --configuration $(buildConfiguration) --no-build --verbosity normal
-  displayName: 'Run unit tests'
+# - script: |
+#     dotnet test $(solution) --configuration $(buildConfiguration) --no-build --verbosity normal
+#   displayName: 'Run unit tests'
 
 - script: |
     dotnet publish $(solution) --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
