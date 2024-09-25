@@ -7,6 +7,7 @@ pool:
 variables:
   solution: '*.sln'
   buildConfiguration: 'Release'
+  versionNumber: '1.0.$(Build.BuildId)'
 
 steps:
 - script: |
@@ -22,12 +23,23 @@ steps:
 #   displayName: 'Run unit tests'
 
 - script: |
-    dotnet publish $(solution) --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+    dotnet publish $(solution) --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(versionNumber)
   displayName: 'Publish solution'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(versionNumber)'
+    ArtifactName: 'drop-$(versionNumber)'
     publishLocation: 'Container'
   displayName: 'Publish build artifacts'
+
+- script: |
+    dotnet pack $(solution) --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+  displayName: 'Pack solution into NuGet package'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'custom'
+    custom: 'nuget'
+    arguments: 'push $(Build.ArtifactStagingDirectory)/*.nupkg --source "release" --api-key az release'
+  displayName: 'Publish NuGet package to Azure Artifacts'
