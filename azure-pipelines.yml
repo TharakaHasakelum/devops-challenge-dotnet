@@ -1,5 +1,6 @@
 trigger:
 - main
+- dev
 
 pool:
   name: 'self-hosted-mac'
@@ -13,6 +14,16 @@ variables:
   containerRegistry: 'devopsdockerregistry.azurecr.io'
   dockerfilePath: './Dockerfile'
   tag: '1.0.$(Build.BuildId)'
+
+- ${{ if eq(variables['Build.SourceBranchName'], 'dev') }}:
+    variables:
+      buildConfiguration: 'Debug' 
+      versionNumber: '1.0.$(Build.BuildId).dev' 
+      dockerRegistryServiceConnection: '07a2f922-bccd-4d78-9c30-6c961948506c'
+      imageRepository: 'dev/salesapi'
+      containerRegistry: 'devopsdockerregistry.azurecr.io'
+      dockerfilePath: './Dockerfile'
+      tag: '1.0.$(Build.BuildId).dev'
 
 steps:
 - script: |
