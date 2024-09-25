@@ -6,24 +6,30 @@ pool:
   name: 'self-hosted-mac'
 
 variables:
-  solution: '*.sln'
-  buildConfiguration: 'Release'
-  versionNumber: '1.0.$(Build.BuildId)'
-  dockerRegistryServiceConnection: '07a2f922-bccd-4d78-9c30-6c961948506c'
-  imageRepository: 'salesapi'
-  containerRegistry: 'devopsdockerregistry.azurecr.io'
-  dockerfilePath: './Dockerfile'
-  tag: '1.0.$(Build.BuildId)'
+  ${{ if eq(variables['Build.SourceBranchName'], 'dev']}}:
+    - group: Development
+  ${{ if eq(variables['Build.SourceBranchName'], 'main']}}:
+    - group: Production 
 
-- ${{ if eq(variables['Build.SourceBranchName'], 'dev') }}:
-    variables:
-      buildConfiguration: 'Debug' 
-      versionNumber: '1.0.$(Build.BuildId).dev' 
-      dockerRegistryServiceConnection: '07a2f922-bccd-4d78-9c30-6c961948506c'
-      imageRepository: 'dev/salesapi'
-      containerRegistry: 'devopsdockerregistry.azurecr.io'
-      dockerfilePath: './Dockerfile'
-      tag: '1.0.$(Build.BuildId).dev'
+# variables:
+#   solution: '*.sln'
+#   buildConfiguration: 'Release'
+#   versionNumber: '1.0.$(Build.BuildId)'
+#   dockerRegistryServiceConnection: '07a2f922-bccd-4d78-9c30-6c961948506c'
+#   imageRepository: 'salesapi'
+#   containerRegistry: 'devopsdockerregistry.azurecr.io'
+#   dockerfilePath: './Dockerfile'
+#   tag: '1.0.$(Build.BuildId)'
+
+# - ${{ if eq(variables['Build.SourceBranchName'], 'dev') }}:
+#     variables:
+#       buildConfiguration: 'Debug' 
+#       versionNumber: '1.0.$(Build.BuildId).dev' 
+#       dockerRegistryServiceConnection: '07a2f922-bccd-4d78-9c30-6c961948506c'
+#       imageRepository: 'dev/salesapi'
+#       containerRegistry: 'devopsdockerregistry.azurecr.io'
+#       dockerfilePath: './Dockerfile'
+#       tag: '1.0.$(Build.BuildId).dev'
 
 steps:
 - script: |
